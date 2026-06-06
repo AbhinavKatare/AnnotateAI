@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DataVerify AI — Enterprise AI Training Data</title>
+<meta name="description" content="Premium RLHF datasets, precision annotation, and human-in-the-loop services for enterprise AI teams.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ── */
+:root {
+  --bg:       #050510;
+  --bg2:      #080818;
+  --bg3:      #0c0c20;
+  --card:     rgba(255,255,255,0.03);
+  --card-hov: rgba(255,255,255,0.05);
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(255,255,255,0.12);
+  --blue:     #4f7cff;
+  --blue2:    #6b94ff;
+  --blue-glow:rgba(79,124,255,0.35);
+  --txt:      rgba(255,255,255,0.9);
+  --txt2:     rgba(255,255,255,0.5);
+  --txt3:     rgba(255,255,255,0.28);
+  --f: 'Inter', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--f); background: var(--bg); color: var(--txt); overflow-x: hidden; line-height: 1.6; }
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 22px 0;
+  transition: all .4s;
+}
+nav.sc {
+  background: rgba(5,5,16,0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+}
+.nav-i { display: flex; align-items: center; justify-content: space-between; }
+.logo { display: flex; align-items: center; gap: 9px; }
+.logo-sym {
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, #4f7cff, #a78bfa);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-sym svg { display: block; }
+.logo-name { font-size: 15px; font-weight: 700; color: #fff; letter-spacing: -.3px; }
+.logo-name span { color: var(--blue2); }
+.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+.nav-links a { font-size: 13.5px; color: var(--txt2); transition: color .2s; font-weight: 400; }
+.nav-links a:hover { color: #fff; }
+.nav-btn {
+  padding: 9px 22px; font-size: 13px; font-weight: 600;
+  color: #fff; background: var(--blue);
+  border: none; border-radius: 8px; cursor: pointer;
+  transition: all .25s; letter-spacing: -.01em;
+  box-shadow: 0 0 20px rgba(79,124,255,.4);
+}
+.nav-btn:hover { background: var(--blue2); box-shadow: 0 0 30px rgba(79,124,255,.6); transform: translateY(-1px); }
+@media(max-width:860px){ .nav-links { display:none; } }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 130px 28px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Light beam effect */
+.hero-light {
+  position: absolute;
+  bottom: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 700px;
+  pointer-events: none;
+  z-index: 0;
+}
+.beam {
+  position: absolute;
+  bottom: 0;
+  transform-origin: bottom center;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0;
+  animation: beam-in 2s ease forwards;
+}
+.beam-1 {
+  width: 300px; height: 500px;
+  left: 50%; margin-left: -150px;
+  background: linear-gradient(180deg, rgba(79,124,255,0) 0%, rgba(79,124,255,0.18) 60%, rgba(79,124,255,0.08) 100%);
+  animation-delay: 0.2s;
+}
+.beam-2 {
+  width: 200px; height: 420px;
+  left: 50%; margin-left: -100px;
+  background: linear-gradient(180deg, rgba(167,139,250,0) 0%, rgba(167,139,250,0.12) 60%, rgba(167,139,250,0.05) 100%);
+  animation-delay: 0.5s;
+}
+.beam-3 {
+  width: 500px; height: 350px;
+  left: 50%; margin-left: -250px;
+  background: radial-gradient(ellipse at 50% 100%, rgba(79,124,255,0.10) 0%, transparent 70%);
+  animation-delay: 0.1s;
+}
+/* Side beams */
+.beam-l {
+  width: 180px; height: 600px;
+  left: 50%; margin-left: -340px;
+  transform-origin: bottom left;
+  transform: rotate(-18deg);
+  background: linear-gradient(180deg, transparent 0%, rgba(79,124,255,0.07) 100%);
+  filter: blur(40px);
+  animation-delay: 0.8s;
+}
+.beam-r {
+  width: 180px; height: 600px;
+  left: 50%; margin-left: 160px;
+  transform-origin: bottom right;
+  transform: rotate(18deg);
+  background: linear-gradient(180deg, transparent 0%, rgba(79,124,255,0.07) 100%);
+  filter: blur(40px);
+  animation-delay: 0.8s;
+}
+@keyframes beam-in { to { opacity: 1; } }
+
+/* Star/particle dots */
+.stars {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 35%, rgba(255,255,255,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 55%, rgba(255,255,255,.25) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 70% 60%, rgba(255,255,255,.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 45%, rgba(255,255,255,.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 5% 75%, rgba(255,255,255,.35) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 15%, rgba(255,255,255,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 40%, rgba(255,255,255,.2) 0%, transparent 100%);
+}
+
+.hero-content { position: relative; z-index: 2; max-width: 780px; }
+
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 14px 5px 5px;
+  background: rgba(79,124,255,0.1);
+  border: 1px solid rgba(79,124,255,0.25);
+  border-radius: 100px;
+  font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.7);
+  margin-bottom: 36px;
+  letter-spacing: .01em;
+}
+.hero-pill-dot {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+}
+
+.hero-h1 {
+  font-size: clamp(44px, 6.5vw, 80px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -.04em;
+  color: #fff;
+  margin-bottom: 24px;
+}
+.hero-h1 .blue { color: var(--blue2); }
+
+.hero-sub {
+  font-size: 16px;
+  color: var(--txt2);
+  max-width: 520px;
+  margin: 0 auto 40px;
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+.hero-btns { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 80px; }
+.btn-blue {
+  padding: 13px 28px; font-size: 14px; font-weight: 600;
+  color: #fff; background: var(--blue); border: none; border-radius: 9px;
+  cursor: pointer; transition: all .25s;
+  box-shadow: 0 0 28px rgba(79,124,255,.45);
+}
+.btn-blue:hover { background: var(--blue2); box-shadow: 0 0 40px rgba(79,124,255,.65); transform: translateY(-2px); }
+.btn-clear {
+  padding: 13px 28px; font-size: 14px; font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border2); border-radius: 9px;
+  cursor: pointer; transition: all .2s;
+}
+.btn-clear:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+/* Hero bar lines (decorative) */
+.hero-bars {
+  display: flex; align-items: flex-end; justify-content: center;
+  gap: 6px; height: 48px; margin-bottom: 64px;
+  position: relative; z-index: 2;
+}
+.bar {
+  width: 3px; border-radius: 3px;
+  background: linear-gradient(180deg, rgba(79,124,255,0.6) 0%, rgba(79,124,255,0.1) 100%);
+  animation: bar-anim 2s ease-in-out infinite alternate;
+}
+.bar:nth-child(1){ height:20px; animation-delay:0s; }
+.bar:nth-child(2){ height:35px; animation-delay:.15s; }
+.bar:nth-child(3){ height:48px; animation-delay:.3s; }
+.bar:nth-child(4){ height:28px; animation-delay:.45s; }
+.bar:nth-child(5){ height:16px; animation-delay:.6s; }
+@keyframes bar-anim { to { opacity: .3; transform: scaleY(.6); } }
+
+/* Hero stats */
+.hero-stats {
+  display: flex; gap: 1px;
+  background: var(--border);
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--border);
+  max-width: 600px; margin: 0 auto;
+  position: relative; z-index: 2;
+  backdrop-filter: blur(20px);
+}
+.h-stat {
+  flex: 1; padding: 22px 24px;
+  background: rgba(255,255,255,0.03);
+  text-align: center;
+}
+.h-stat:hover { background: rgba(255,255,255,0.05); }
+.hs-label { font-size: 11px; color: var(--txt3); font-weight: 500; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 8px; }
+.hs-value { font-size: 30px; font-weight: 800; color: #fff; letter-spacing: -.04em; line-height: 1; }
+.hs-value .unit { font-size: 18px; color: var(--blue2); }
+
+/* ── SECTION SHARED ── */
+.sec { padding: 110px 0; }
+.sec-center { text-align: center; }
+.sec-eye {
+  display: inline-block;
+  font-size: 12px; font-weight: 500; color: var(--blue2);
+  letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.sec-h {
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 800; color: #fff;
+  line-height: 1.1; letter-spacing: -.03em;
+  margin-bottom: 16px;
+}
+.sec-h .blue { color: var(--blue2); }
+.sec-p {
+  font-size: 15px; color: var(--txt2); line-height: 1.75;
+  font-weight: 300; max-width: 560px; margin: 0 auto;
+}
+
+/* ── WHAT IS SECTION ── */
+.what-bg { background: var(--bg2); }
+
+/* Bento grid — matches the reference exactly */
+.bento { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 56px; }
+@media(max-width:700px){ .bento { grid-template-columns: 1fr; } }
+
+.bento-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 32px;
+  position: relative; overflow: hidden;
+  transition: all .3s;
+  cursor: default;
+}
+.bento-card:hover {
+  background: var(--card-hov);
+  border-color: var(--border2);
+  transform: translateY(-2px);
+}
+.bento-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(79,124,255,0.4), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.bento-card:hover::before { opacity: 1; }
+
+/* Large top cards */
+.bento-tall { min-height: 280px; }
+
+/* Card visual area */
+.card-visual {
+  height: 140px; border-radius: 12px; margin-bottom: 24px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.cv-dark { background: rgba(0,0,0,0.3); border: 1px solid var(--border); }
+
+/* Network nodes visual */
+.nodes { position: relative; width: 100%; height: 100%; }
+.node {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.4); font-size: 11px; font-weight: 600;
+}
+.node-c { width:44px; height:44px; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(79,124,255,0.15); border-color:rgba(79,124,255,0.4); color:var(--blue2); }
+.node-1 { width:28px; height:28px; top:20%; left:18%; }
+.node-2 { width:28px; height:28px; top:15%; right:20%; }
+.node-3 { width:28px; height:28px; bottom:22%; left:22%; }
+.node-4 { width:28px; height:28px; bottom:18%; right:18%; }
+.node-5 { width:22px; height:22px; top:50%; left:12%; transform:translateY(-50%); }
+.node-line {
+  position: absolute; top: 50%; left: 50%;
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, rgba(79,124,255,0.4), transparent);
+  transform-origin: left center;
+}
+
+/* Social icons visual */
+.social-icons { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; padding: 12px; }
+.s-ico {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; transition: all .2s;
+}
+.s-ico:hover { background: rgba(79,124,255,0.15); border-color: rgba(79,124,255,0.3); }
+
+/* Bar chart visual */
+.mini-chart { display: flex; align-items: flex-end; gap: 5px; height: 80px; padding: 0 16px; }
+.mc-bar {
+  flex: 1; border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, rgba(79,124,255,0.6) 0%, rgba(79,124,255,0.2) 100%);
+}
+
+/* Shield visual */
+.shield-vis {
+  width: 60px; height: 70px;
+  background: linear-gradient(180deg, rgba(79,124,255,0.2), rgba(79,124,255,0.05));
+  border: 1px solid rgba(79,124,255,0.3);
+  border-radius: 50% 50% 45% 45%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+
+/* Feed card visual */
+.feed { display: flex; flex-direction: column; gap: 7px; width: 100%; padding: 0 8px; }
+.feed-item {
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  border-radius: 8px; padding: 9px 12px;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.feed-dot { width:7px; height:7px; border-radius:50%; background:var(--blue); flex-shrink:0; margin-top:4px; }
+.feed-dot.green { background: #4ade80; }
+.feed-text { font-size:11px; color: var(--txt2); line-height: 1.4; }
+.feed-time { font-size:10px; color:var(--txt3); margin-left:auto; white-space:nowrap; flex-shrink:0; }
+.feed-live { display:flex; align-items:center; gap:6px; padding-top:4px; }
+.live-dot { width:6px;height:6px;border-radius:50%;background:#4ade80; animation:pulse-g 1.5s ease-in-out infinite; }
+@keyframes pulse-g { 0%,100%{opacity:1}50%{opacity:.3} }
+.live-txt { font-size:11px; color:var(--txt3); }
+
+.card-name { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: -.02em; }
+.card-desc { font-size: 13px; color: var(--txt2); line-height: 1.65; }
+
+/* Bottom row 3-col */
+.bento-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 12px; }
+@media(max-width:700px){ .bento-3 { grid-template-columns: 1fr; } }
+.bento-sm { min-height: 200px; }
+
+/* ── HOW IT WORKS ── */
+.how-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 12px;
+  margin-top: 56px;
+}
+@media(max-width:860px){ .how-grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width:560px){ .how-grid { grid-template-columns: 1fr; } }
+
+.how-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+  padding: 28px 24px; transition: all .3s;
+}
+.how-card:hover { background: var(--card-hov); border-color: var(--border2); transform: translateY(-3px); }
+.how-card.hl { background: rgba(79,124,255,0.08); border-color: rgba(79,124,255,0.2); }
+.how-card.hl:hover { background: rgba(79,124,255,0.12); }
+.hc-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(79,124,255,0.1); border: 1px solid rgba(79,124,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px; font-size: 18px;
+}
+.hc-name { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: -.02em; }
+.hc-desc { font-size: 13px; color: var(--txt2); line-height: 1.65; }
+
+/* ── POWER SECTION (like $KIT section) ── */
+.power-bg { background: var(--bg2); }
+.power-inner {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+@media(max-width:860px){ .power-inner { grid-template-columns: 1fr; gap: 48px; } }
+
+.power-stats { display: flex; gap: 40px; margin-top: 32px; flex-wrap: wrap; }
+.ps { }
+.ps-val { font-size: 36px; font-weight: 900; color: #fff; letter-spacing: -.05em; line-height: 1; margin-bottom: 4px; }
+.ps-lbl { font-size: 12px; color: var(--txt3); font-weight: 500; }
+
+.power-right { display: flex; flex-direction: column; gap: 10px; }
+.power-item {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 20px; background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; transition: all .3s;
+}
+.power-item:hover { background: var(--card-hov); border-color: var(--border2); }
+.pi-icon {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: rgba(79,124,255,0.1); border: 1px solid rgba(79,124,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.pi-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 5px; letter-spacing: -.01em; }
+.pi-desc { font-size: 12.5px; color: var(--txt2); line-height: 1.6; }
+
+/* ── TESTIMONIALS ── */
+.test-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 56px; }
+@media(max-width:860px){ .test-grid { grid-template-columns: 1fr; } }
+.test-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+  padding: 28px; display: flex; flex-direction: column; transition: all .3s;
+}
+.test-card:hover { background: var(--card-hov); border-color: var(--border2); transform: translateY(-2px); }
+.test-q { font-size: 28px; color: var(--blue2); line-height: 1; margin-bottom: 14px; font-weight: 900; }
+.test-txt { font-size: 13.5px; color: rgba(255,255,255,0.65); line-height: 1.75; flex: 1; margin-bottom: 24px; font-weight: 300; }
+.test-auth { display: flex; align-items: center; gap: 12px; padding-top: 18px; border-top: 1px solid var(--border); }
+.ta-av {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(79,124,255,0.2); border: 1px solid rgba(79,124,255,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; color: var(--blue2); flex-shrink: 0;
+}
+.ta-name { font-size: 13px; font-weight: 600; color: #fff; }
+.ta-role { font-size: 11.5px; color: var(--txt3); }
+
+/* ── TRUSTED ── */
+.trust-bar {
+  padding: 40px 0;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.01);
+}
+.trust-inner { display: flex; align-items: center; gap: 40px; overflow: hidden; flex-wrap: wrap; justify-content: center; }
+.trust-lbl { font-size: 11px; font-weight: 600; color: var(--txt3); text-transform: uppercase; letter-spacing: .1em; white-space: nowrap; }
+.trust-logos { display: flex; align-items: center; gap: 40px; flex-wrap: wrap; justify-content: center; }
+.trust-logo { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.18); letter-spacing: -.02em; transition: color .2s; white-space: nowrap; }
+.trust-logo:hover { color: rgba(255,255,255,0.35); }
+
+/* ── CTA ── */
+.cta-sec {
+  padding: 120px 0;
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-sec::before {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 700px; height: 400px;
+  background: radial-gradient(ellipse, rgba(79,124,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-h {
+  font-size: clamp(32px, 5vw, 58px);
+  font-weight: 900; color: #fff;
+  line-height: 1.05; letter-spacing: -.04em; margin-bottom: 18px;
+  position: relative; z-index: 1;
+}
+.cta-h .blue { color: var(--blue2); }
+.cta-p {
+  font-size: 15px; color: var(--txt2); max-width: 480px; margin: 0 auto 40px;
+  line-height: 1.75; font-weight: 300; position: relative; z-index: 1;
+}
+.cta-btns { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; z-index: 1; }
+.cta-note { font-size: 12px; color: var(--txt3); margin-top: 20px; position: relative; z-index: 1; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg2); padding: 56px 0 36px;
+}
+.foot-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+@media(max-width:860px){ .foot-top { grid-template-columns: 1fr 1fr; } }
+@media(max-width:480px){ .foot-top { grid-template-columns: 1fr; } }
+.foot-desc { font-size: 13px; color: var(--txt2); line-height: 1.7; margin-top: 14px; max-width: 240px; }
+.foot-col-title { font-size: 11px; font-weight: 700; color: var(--txt3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 14px; }
+.foot-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.foot-links a { font-size: 13px; color: var(--txt2); transition: color .2s; }
+.foot-links a:hover { color: #fff; }
+.foot-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
+.foot-copy { font-size: 12px; color: var(--txt3); }
+.foot-legal { display: flex; gap: 18px; }
+.foot-legal a { font-size: 12px; color: var(--txt3); transition: color .2s; }
+.foot-legal a:hover { color: var(--txt2); }
+
+/* ── SCROLL REVEAL ── */
+.rv { opacity: 0; transform: translateY(28px); transition: opacity .75s ease, transform .75s ease; }
+.rv.on { opacity: 1; transform: translateY(0); }
+.rv1 { transition-delay: .1s; } .rv2 { transition-delay: .2s; } .rv3 { transition-delay: .3s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-i">
+      <div class="logo">
+        <div class="logo-sym">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="2" y="2" width="5" height="5" rx="1.2" fill="white"/>
+            <rect x="9" y="2" width="5" height="5" rx="1.2" fill="white" opacity=".5"/>
+            <rect x="2" y="9" width="5" height="5" rx="1.2" fill="white" opacity=".5"/>
+            <rect x="9" y="9" width="5" height="5" rx="1.2" fill="white"/>
+          </svg>
+        </div>
+        <span class="logo-name">DataVerify<span>AI</span></span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#what">Platform</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#power">Quality</a></li>
+        <li><a href="#industries">Industries</a></li>
+        <li><a href="#testi">Clients</a></li>
+      </ul>
+      <button class="nav-btn">Get Started</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="stars"></div>
+  <div class="hero-light">
+    <div class="beam beam-l"></div>
+    <div class="beam beam-r"></div>
+    <div class="beam beam-3"></div>
+    <div class="beam beam-1"></div>
+    <div class="beam beam-2"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-pill">
+      <div class="hero-pill-dot">✦</div>
+      Enterprise AI Training Data Platform
+    </div>
+
+    <h1 class="hero-h1">
+      Train Better Models<br>With <span class="blue">Verified Data.</span>
+    </h1>
+
+    <p class="hero-sub">
+      Premium RLHF datasets, precision annotation pipelines, and expert human evaluation — purpose-built for AI teams that refuse to compromise on training data quality.
+    </p>
+
+    <div class="hero-btns">
+      <button class="btn-blue">Get Started Free</button>
+      <button class="btn-clear">View Quality Demo</button>
+    </div>
+
+    <div class="hero-bars">
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      <div class="bar"></div><div class="bar"></div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="h-stat">
+        <div class="hs-label">Pairs Labeled</div>
+        <div class="hs-value">50K<span class="unit">+</span></div>
+      </div>
+      <div class="h-stat">
+        <div class="hs-label">Agreement Rate</div>
+        <div class="hs-value">96<span class="unit">%</span></div>
+      </div>
+      <div class="h-stat">
+        <div class="hs-label">Delivery</div>
+        <div class="hs-value">72<span class="unit">hr</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUSTED BY -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-inner">
+      <span class="trust-lbl">Trusted by</span>
+      <div class="trust-logos">
+        <span class="trust-logo">NeuralForge</span>
+        <span class="trust-logo">QuantumML</span>
+        <span class="trust-logo">VisionAI Labs</span>
+        <span class="trust-logo">CortexData</span>
+        <span class="trust-logo">Meridian AI</span>
+        <span class="trust-logo">Synapse Systems</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT IS -->
+<section class="sec what-bg" id="what">
+  <div class="container">
+    <div class="sec-center">
+      <div class="sec-eye">The Platform</div>
+      <h2 class="sec-h">What Is <span class="blue">DataVerify AI?</span></h2>
+      <p class="sec-p">A complete AI training data infrastructure — from raw unlabeled data to certified, production-ready datasets with full audit trails.</p>
+    </div>
+
+    <!-- Top 2-col bento -->
+    <div class="bento">
+      <!-- Card 1: Expert Workforce Network -->
+      <div class="bento-card bento-tall rv">
+        <div class="card-visual cv-dark">
+          <div class="nodes">
+            <div class="node node-c">T3</div>
+            <div class="node node-1">T1</div>
+            <div class="node node-2">T2</div>
+            <div class="node node-3">T1</div>
+            <div class="node node-4">T2</div>
+            <div class="node node-5">T1</div>
+          </div>
+        </div>
+        <div class="card-name">3-Tier Expert Workforce</div>
+        <div class="card-desc">General crowd for volume tasks. Domain-vetted specialists for complex annotation. PhD and MD-level experts for healthcare, legal, and research domains — routed automatically by task difficulty.</div>
+      </div>
+
+      <!-- Card 2: AI Cross-Validation -->
+      <div class="bento-card bento-tall rv rv1">
+        <div class="card-visual cv-dark">
+          <div class="social-icons">
+            <div class="s-ico">🧠</div>
+            <div class="s-ico">📊</div>
+            <div class="s-ico">✦</div>
+            <div class="s-ico">🔍</div>
+            <div class="s-ico">📋</div>
+            <div class="s-ico">⚡</div>
+            <div class="s-ico">🛡️</div>
+          </div>
+        </div>
+        <div class="card-name">AI Cross-Validation Engine</div>
+        <div class="card-desc">Every human annotation is independently scored by our AI evaluation model. 96% agreement rate across helpfulness, accuracy, clarity, and safety — with automatic re-annotation if any batch falls below threshold.</div>
+      </div>
+    </div>
+
+    <!-- Bottom 3-col bento -->
+    <div class="bento-3">
+      <!-- Card 3: Behavioral Analytics -->
+      <div class="bento-card bento-sm rv">
+        <div class="card-visual cv-dark" style="height:100px">
+          <div class="mini-chart">
+            <div class="mc-bar" style="height:40%"></div>
+            <div class="mc-bar" style="height:65%"></div>
+            <div class="mc-bar" style="height:85%"></div>
+            <div class="mc-bar" style="height:55%"></div>
+            <div class="mc-bar" style="height:75%"></div>
+            <div class="mc-bar" style="height:90%"></div>
+            <div class="mc-bar" style="height:60%"></div>
+          </div>
+        </div>
+        <div class="card-name">Behavioral Telemetry</div>
+        <div class="card-desc">Keystroke cadence, time-on-task, and paste detection logs prove genuine human annotation on every item.</div>
+      </div>
+
+      <!-- Card 4: Enterprise Security -->
+      <div class="bento-card bento-sm rv rv1">
+        <div class="card-visual cv-dark" style="height:100px">
+          <div class="shield-vis">🛡️</div>
+        </div>
+        <div class="card-name">Enterprise Security</div>
+        <div class="card-desc">HIPAA-ready, SOC 2 Type II, GDPR compliant. Data residency options for EU and regulated industries.</div>
+      </div>
+
+      <!-- Card 5: Live Quality Feed -->
+      <div class="bento-card bento-sm rv rv2">
+        <div class="card-visual cv-dark" style="height:100px;padding:10px">
+          <div class="feed">
+            <div class="feed-item">
+              <div class="feed-dot"></div>
+              <div class="feed-text">Batch #4721 — 220 pairs certified</div>
+              <div class="feed-time">2m ago</div>
+            </div>
+            <div class="feed-item">
+              <div class="feed-dot green"></div>
+              <div class="feed-text">IAA score 96.0% — SLA passed</div>
+              <div class="feed-time">5m ago</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-name">Live Quality Feed</div>
+        <div class="card-desc">Real-time batch monitoring with per-item audit trails and instant SLA alerts.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="sec" id="how">
+  <div class="container">
+    <div class="sec-center">
+      <div class="sec-eye">How It Works</div>
+      <h2 class="sec-h">From Raw Data To<br><span class="blue">Training-Ready</span> In 72 Hours</h2>
+      <p class="sec-p">Our automated pipeline handles ingestion, pre-labeling, expert annotation, quality verification, and certified delivery — end to end.</p>
+    </div>
+
+    <div class="how-grid">
+      <div class="how-card rv">
+        <div class="hc-icon">📤</div>
+        <div class="hc-name">Submit Your Data</div>
+        <div class="hc-desc">Upload via secure API, S3, or web portal. PII stripping, schema validation, and task structuring happen automatically on ingestion.</div>
+      </div>
+      <div class="how-card hl rv rv1">
+        <div class="hc-icon">🤖</div>
+        <div class="hc-name">AI Pre-Labeling</div>
+        <div class="hc-desc">Our domain-trained model handles 60–80% of straightforward cases instantly, routing only complex edge cases to human annotators.</div>
+      </div>
+      <div class="how-card rv rv2">
+        <div class="hc-icon">👥</div>
+        <div class="hc-name">Expert Annotation</div>
+        <div class="hc-desc">Vetted specialists complete edge cases with full telemetry logging. Multi-round consensus verification ensures consistent labels.</div>
+      </div>
+      <div class="how-card rv">
+        <div class="hc-icon">🔍</div>
+        <div class="hc-name">Quality Verification</div>
+        <div class="hc-desc">AI cross-validation, honeypot tasks, and behavioral telemetry analysis run automatically on every completed batch before delivery.</div>
+      </div>
+      <div class="how-card rv rv1">
+        <div class="hc-icon">📊</div>
+        <div class="hc-name">Predict Improvements</div>
+        <div class="hc-desc">Active learning identifies your model's weakest areas. We surface the highest-value annotation tasks to maximize training ROI.</div>
+      </div>
+      <div class="how-card rv rv2">
+        <div class="hc-icon">✅</div>
+        <div class="hc-name">Certified Delivery</div>
+        <div class="hc-desc">Receive your dataset with a complete quality report, per-item audit trail, and provenance certificate in your exact required format.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POWER / QUALITY SECTION -->
+<section class="sec power-bg" id="power">
+  <div class="container">
+    <div class="power-inner">
+      <div>
+        <div class="sec-eye">The Quality Difference</div>
+        <h2 class="sec-h" style="text-align:left;margin-bottom:16px">The <span class="blue">Power</span> Of<br>Verified Training Data</h2>
+        <p class="sec-p" style="margin:0;text-align:left">DataVerify AI is the annotation infrastructure powering the next generation of production AI — with exclusive quality guarantees, auditable provenance, and a workforce that no other platform can match.</p>
+
+        <div class="power-stats">
+          <div class="ps"><div class="ps-val">2,500<span style="color:var(--blue2)">+</span></div><div class="ps-lbl">Verified Experts</div></div>
+          <div class="ps"><div class="ps-val">50K<span style="color:var(--blue2)">+</span></div><div class="ps-lbl">Pairs Monthly</div></div>
+        </div>
+
+        <div style="margin-top:32px">
+          <button class="btn-blue">Learn More</button>
+        </div>
+      </div>
+
+      <div class="power-right rv">
+        <div class="power-item">
+          <div class="pi-icon">🎯</div>
+          <div>
+            <div class="pi-title">Quality Guarantee</div>
+            <div class="pi-desc">When multiple annotators agree, confidence is amplified. Miss our 96% threshold and we re-annotate the entire batch free within 48 hours.</div>
+          </div>
+        </div>
+        <div class="power-item rv1">
+          <div class="pi-icon">🔐</div>
+          <div>
+            <div class="pi-title">Provenance Certification</div>
+            <div class="pi-desc">Every dataset ships with a signed certificate — item hash, worker ID, time on task, IAA score — proving genuine human creation with no AI contamination.</div>
+          </div>
+        </div>
+        <div class="power-item rv2">
+          <div class="pi-icon">⚡</div>
+          <div>
+            <div class="pi-title">Deflationary Quality Burn</div>
+            <div class="pi-desc">Low-quality annotators are automatically removed from the pool. Our workforce quality improves continuously — meaning your data quality improves over time.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="sec" id="industries">
+  <div class="container">
+    <div class="sec-center" style="margin-bottom:56px">
+      <div class="sec-eye">Industries</div>
+      <h2 class="sec-h">Built For Sectors Where<br><span class="blue">AI Failure</span> Is Not An Option</h2>
+      <p class="sec-p">Domain-credentialed annotation teams for every regulated and high-stakes industry deploying AI at scale.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-card rv"><div class="hc-icon">🏥</div><div class="hc-name">Healthcare AI</div><div class="hc-desc">Clinical NLP, radiology annotation, and medical imaging datasets labeled by verified clinical professionals. HIPAA-ready with full audit documentation.</div></div>
+      <div class="how-card rv rv1"><div class="hc-icon">🚗</div><div class="hc-name">Autonomous Vehicles</div><div class="hc-desc">Sensor fusion annotation, LiDAR point cloud labeling, and driving scenario classification for ADAS and full self-driving development.</div></div>
+      <div class="how-card rv rv2"><div class="hc-icon">🧠</div><div class="hc-name">LLM Development</div><div class="hc-desc">RLHF preference datasets, instruction-following evaluation, red-teaming, and alignment data built by domain experts for frontier models.</div></div>
+      <div class="how-card rv"><div class="hc-icon">💰</div><div class="hc-name">Finance & FinTech</div><div class="hc-desc">Document understanding, fraud pattern labeling, and regulatory compliance datasets with FCA and SEC-aligned quality standards.</div></div>
+      <div class="how-card rv rv1"><div class="hc-icon">🌾</div><div class="hc-name">Agriculture</div><div class="hc-desc">Crop health, pest detection, and yield prediction training data from satellite, drone, and ground sensor imagery.</div></div>
+      <div class="how-card rv rv2"><div class="hc-icon">🏭</div><div class="hc-name">Industrial & Robotics</div><div class="hc-desc">Defect detection, assembly verification, and manipulation trajectory annotation for next-generation industrial AI systems.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="sec" style="background:var(--bg2)" id="testi">
+  <div class="container">
+    <div class="sec-center" style="margin-bottom:0">
+      <div class="sec-eye">Client Results</div>
+      <h2 class="sec-h">Trusted By Teams That<br><span class="blue">Can't Afford</span> Bad Data</h2>
+      <p class="sec-p">From Series A startups to enterprise AI programs — when model quality depends on training data, teams choose DataVerify AI.</p>
+    </div>
+    <div class="test-grid">
+      <div class="test-card rv">
+        <div class="test-q">"</div>
+        <div class="test-txt">We tried three annotation vendors before DataVerify. The difference in quality was immediately visible in our reward model's performance. The behavioral telemetry reports alone changed how we think about data provenance.</div>
+        <div class="test-auth"><div class="ta-av">SK</div><div><div class="ta-name">Siddharth K.</div><div class="ta-role">Head of ML, NeuralForge</div></div></div>
+      </div>
+      <div class="test-card rv rv1">
+        <div class="test-q">"</div>
+        <div class="test-txt">Scale AI's minimum commitment was completely out of reach for our stage. DataVerify gave us the same quality level without a $500K annual contract. Pilot-to-production in under a week.</div>
+        <div class="test-auth"><div class="ta-av">MR</div><div><div class="ta-name">Maya R.</div><div class="ta-role">CTO, QuantumML Systems</div></div></div>
+      </div>
+      <div class="test-card rv rv2">
+        <div class="test-q">"</div>
+        <div class="test-txt">For our FDA submission we needed clinical annotation that could survive regulatory scrutiny. The provenance certificates and audit trails DataVerify provided were exactly what our regulatory team required.</div>
+        <div class="test-auth"><div class="ta-av">JP</div><div><div class="ta-name">Dr. James P.</div><div class="ta-role">Chief AI Officer, MedAxis</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <div class="container">
+    <div class="sec-eye">Start Today</div>
+    <h2 class="cta-h">Your Model Quality<br>Starts With <span class="blue">Your Data.</span></h2>
+    <p class="cta-p">Send us your 100 hardest edge cases. We return them fully labeled with a complete quality report in 72 hours. If the quality does not move your eval metrics, you owe us nothing.</p>
+    <div class="cta-btns">
+      <button class="btn-blue">Claim Your Free Pilot</button>
+      <button class="btn-clear">Schedule a Call</button>
+    </div>
+    <div class="cta-note">No minimum contract · 72hr delivery · Quality guarantee in writing</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-top">
+      <div>
+        <div class="logo">
+          <div class="logo-sym"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1.2" fill="white"/><rect x="9" y="2" width="5" height="5" rx="1.2" fill="white" opacity=".5"/><rect x="2" y="9" width="5" height="5" rx="1.2" fill="white" opacity=".5"/><rect x="9" y="9" width="5" height="5" rx="1.2" fill="white"/></svg></div>
+          <span class="logo-name">DataVerify<span>AI</span></span>
+        </div>
+        <p class="foot-desc">Enterprise AI training data annotation and RLHF services — built for teams that refuse to compromise on model quality.</p>
+      </div>
+      <div><div class="foot-col-title">Services</div><ul class="foot-links"><li><a href="#">RLHF Datasets</a></li><li><a href="#">Data Labeling</a></li><li><a href="#">Computer Vision</a></li><li><a href="#">Audio Annotation</a></li><li><a href="#">Human-in-the-Loop</a></li></ul></div>
+      <div><div class="foot-col-title">Company</div><ul class="foot-links"><li><a href="#">About</a></li><li><a href="#">Case Studies</a></li><li><a href="#">Quality Standards</a></li><li><a href="#">Security</a></li><li><a href="#">Careers</a></li></ul></div>
+      <div><div class="foot-col-title">Resources</div><ul class="foot-links"><li><a href="#">Documentation</a></li><li><a href="#">API Reference</a></li><li><a href="#">Blog</a></li><li><a href="#">Pricing</a></li><li><a href="#">Contact</a></li></ul></div>
+    </div>
+    <div class="foot-bottom">
+      <div class="foot-copy">© 2026 DataVerify AI. All rights reserved.</div>
+      <div class="foot-legal"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Security</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('sc', window.scrollY > 30));
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
